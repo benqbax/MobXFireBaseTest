@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import {TodosListComponent} from './components/todos-list-component'
+import {ContactListComponent} from './components/contact-list-component'
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <TodosListComponent TodoStore={this.props.TodoStore.todos} />
+        <ContactListComponent ContactStore={this.props.ContactStore.contacts} />
       </div>
     );
   }

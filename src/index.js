@@ -9,5 +9,5 @@ import registerServiceWorker from './registerServiceWorker';
 import {store} from './stores/store'
 
 
-ReactDOM.render(<App TodoStore={store}/>, document.getElementById('root'));
+ReactDOM.render(<App ContactStore={store}/>, document.getElementById('root'));
 registerServiceWorker();

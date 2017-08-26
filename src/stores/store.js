@@ -1,7 +1,7 @@
-import {todos} from './todos';
+import {contacts} from './contacts';
 
 const store = {
-  todos
+  contacts
 };
 
 window.store = store;

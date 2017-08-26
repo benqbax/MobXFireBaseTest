@@ -12,12 +12,12 @@ var config = {
 
 
   const root = firebase.database().ref();
-  const todos = firebase.database().ref('todos');
+  const contacts = firebase.database().ref('contacts');
 
 
   const Fb = {
       root,
-      todos
+      contacts
   };
 
   export { Fb };
