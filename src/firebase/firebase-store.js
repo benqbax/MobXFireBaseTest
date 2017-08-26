@@ -12,10 +12,12 @@ var config = {
 
 
   const root = firebase.database().ref();
+  const reff = firebase.database();
   const contacts = firebase.database().ref('contacts');
 
 
   const Fb = {
+      reff,
       root,
       contacts
   };

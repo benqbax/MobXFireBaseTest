@@ -5,14 +5,14 @@ import {map, toJS} from 'mobx';
 
 class Contact{
     @observable name;
-    @observable isAlive;
     @observable timeCreated;
 
     constructor(name){
         this.name = name;
-        this.isAlive = true;
+        this.editing = false;
         this.timeCreated = Date.now();
     }
+
 
 }
 
@@ -48,27 +48,69 @@ class Contacts{
             }, {});
             return result;
         }
-
-        
-        
+   
     }
+
+    validate(name, key){
+        var dublicate = false;
+        if(toJS(this.contacts)!=null){
+            Object.keys(toJS(this.contacts))
+            .map((key,value) =>{
+                if(this.contacts[key].name === name){
+                    
+                    dublicate =  true;
+                }
+                else{
+                    dublicate =  false;
+                }
+            });
+        }
+        return dublicate
+    }
+    
 
     @action add = (name) =>{
         const id = Fb.contacts.push().key;
         //this.update(id, name);
         
-        var postData = toJS(new Contact(name));
-       var updates = {};
-       updates['/contacts/' + id] = postData;
-       Fb.root.update(updates);
+        //checkes if name has been added before
+        var dublicate = false;
+        if(toJS(this.contacts)!=null){
+            Object.keys(toJS(this.contacts))
+            .map((key,value) =>{
+                if(this.contacts[key].name === name){
+                    dublicate = true;
+                    alert("Please choose another name")
+                    
+                }
+            });
+        }
+        
+        if(!dublicate){
+            var postData = toJS(new Contact(name));
+            var updates = {};
+            updates['/contacts/' + id] = postData;
+            Fb.root.update(updates);
+        }
+       
     }
 
     @action update = (id, name) =>{
-        Fb.contacts.update({[id]:{name}})
+            Fb.reff.ref('/contacts/' + id).update(
+            {name: name})
+        
     }
 
     @action delete = (id) =>{
         Fb.contacts.child(id).remove();
+    }
+
+    @action resetFilter =() => {
+        this.filter = "";
+        console.log(this.filter)
+        
+
+        
     }
 
 }
