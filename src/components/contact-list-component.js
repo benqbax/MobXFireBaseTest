@@ -17,7 +17,6 @@ export class ContactListComponent extends Component{
     @observable picture;
     @observable addingContact;
     @observable addButton;
-    @observable picture;
     @observable uploadButton;
 
     componentWillMount(){
@@ -25,27 +24,13 @@ export class ContactListComponent extends Component{
         this.resetAddState();
     }
 
-    
-    
+
     clearInput=() =>{
         this.props.ContactStore.filter = "";
     }
    
     filter(e){
         this.props.ContactStore.filter = e.target.value;
-    }
-
-    handleSubmit = (e) =>{
-        e.preventDefault();
-        const value = this.contact.value;
-        if(!value==""){
-            this.props.ContactStore.add(value)
-            this.contact.value = '';
-        }
-        else{
-            alert("Please enter a name")
-        }
-        
     }
 
     handleDelete =(key) => {
@@ -60,9 +45,9 @@ export class ContactListComponent extends Component{
 
     handleFiles = (file) =>{
         var filePicture = file.target.files[0]
-        this.setPicture(filePicture)
         this.updateUploadState();
-       // this.props.ContactStore.uploadImage();
+        this.setPicture(filePicture)
+        
     }
     
    
@@ -93,8 +78,7 @@ export class ContactListComponent extends Component{
                 width: '100%',
                 opacity: 0,
             }
-            
-           
+              
         }
     
         let addContent;
@@ -120,19 +104,17 @@ export class ContactListComponent extends Component{
                     onKeyPress={this.handleEnterKeyDown}                    
                     />
 
-
-                    
                     <RaisedButton
-                    label={!this.uploadButton ? "Upload image" : this.picture.name + " loaded"}
+                    label={!this.uploadButton ? "Upload image" : "image loaded"}
                     disabled={this.uploadButton}
                     labelPosition="before"
                     style={styles.input}
                     containerElement="label">
-                            <input type="file" style={styles.button} onChange={this.handleFiles}/>
+                            <input disabled={this.uploadButton} type="file" style={styles.button} onChange={this.handleFiles}/>
                         </RaisedButton>
 
                     <div className="saveButtons" >
-                        <RaisedButton style={{marginLeft:12}} label="Cancel" onClick={this.resetAddState} />
+                        <RaisedButton style={{marginLeft:12}} label="Cancel" onClick={this.resetAddButtons} />
                         <RaisedButton style={{marginLeft:12}}label="Save" primary={true} onClick={this.onSave} />
                     </div>
                 </div>
@@ -171,7 +153,7 @@ export class ContactListComponent extends Component{
 
 
     //-------------actions------------//
-    @action setPicture = (file) =>{
+    @action setPicture =(file) =>{
         this.picture = file;
     }
 
@@ -184,9 +166,19 @@ export class ContactListComponent extends Component{
     }
 
     @action resetAddState =() =>{
+        
         this.addButton=true;
         this.addingContact=false;
     }
+
+    @action resetAddButtons = () =>{
+        
+        this.uploadButton = !this.uploadButton;
+        this.firstNameValue="";
+        this.lastNameValue="";
+        this.resetAddState()
+    }
+
 
     @action setAddState = () =>{
         this.addButton=false;
@@ -211,6 +203,7 @@ export class ContactListComponent extends Component{
         this.props.ContactStore.add(this.firstNameValue, this.lastNameValue, this.picture)
         this.resetInput()
         this.resetAddState();
+        this.updateUploadState();
         
     }
 

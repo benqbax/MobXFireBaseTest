@@ -13,18 +13,6 @@ import ActionAccountCircle from 'material-ui/svg-icons/action/account-circle'
 @observer
 export class ContactComponent extends Component{
 
-    componentWillMount(){
-       // ListItem.defaultProps.disableTouchRipple = true; 
-       // ListItem.defaultProps.disableFocusRipple = true;
-    }
-
-    constructor(props){
-        super(props);
-        this.state={
-            editing:false,
-            value:this.props.contact.name
-        }
-    }
    
     handleDelete =(id) =>{
            
@@ -40,39 +28,15 @@ export class ContactComponent extends Component{
         
     }
 
-    handleEditing =() =>{
-        this.setState({
-            editing:!this.state.editing
-
-        })
-    }
    
-    //updates the list item
-    handleChange = (event) => {
-        this.setState({
-          value: event.target.value,
-        }, () =>{
-            this.props.ContactStore.update(this.props.id, this.state.value) 
-        });
-       
-      };
-    
-    //handles if you press enter when changing the name
-    handleEnter = (event) =>{
-        if(event.key=='Enter'){
-            this.handleEditing();
-        }
-    }
+   
+   
 
 
     render(){
         const {contact, id} = this.props;
-        const isEditing = this.state.editing;
-        console.log(contact.pictureUrl)
-       if(!isEditing){
-        return(
-
-            
+        
+        return( 
             <ListItem
             leftAvatar={
                 <Avatar src={contact.pictureUrl} size={40} />
@@ -82,23 +46,8 @@ export class ContactComponent extends Component{
             
             </ListItem>
         )
-       }
-       else{
-           return(
-               <ListItem
-               disableTouchRipple={true}
-                style={inputStyle}
-                leftIcon={<ModeEditIcon onClick={e =>this.handleEditing()}/>}>
-                    <TextField
-                        style={inputStyle}
-                        id="text-field-controlled"
-                        value={this.state.value}
-                        onChange={this.handleChange}
-                        onKeyPress={this.handleEnter}
-                    />
-                </ListItem>
-           )
-       }
+       
+       
         
     }
 }

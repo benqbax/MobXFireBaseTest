@@ -10,17 +10,15 @@ class Contact{
     @observable pictureUrl;
     @observable pictureUrlRef;
 
-    constructor(firstName, lastName, picture){
+    constructor(firstName, lastName){
         this.firstName = firstName;
         this.lastName =lastName;
         this.timeCreated = Date.now();
-        this.pictureUrl = picture
-        this.pictureUrlRef = null;
+        this.pictureUrlRef ="";
+        this.pictureUrl="";
     }
 
-    @action setPictureUrl=(url)=>{
-        this.pictureUrl=url;
-    }
+    
 
 
 }
@@ -79,15 +77,11 @@ class Contacts{
 
     @action add = (first, last, picture) =>{
         const id = Fb.contacts.push().key;
-
-        //this.update(id, name);
-        //uploading image
         this.uploadImage(picture, id);
-        //checkes if name has been added before
-            var postData = toJS(new Contact(first, last, picture));
-            var updates = {};
-            updates['/contacts/' + id] = postData;
-            Fb.root.update(updates);
+        var postData = toJS(new Contact(first, last));
+        var updates = {};
+        updates['/contacts/' + id] = postData;
+        Fb.root.update(updates);
     }
 
     /*
@@ -98,7 +92,18 @@ class Contacts{
     }*/
 
     @action delete = (id) =>{
+        Fb.reff.ref('/contacts/' + id).once('value').then(function(snapshot){
+         
+            var child = snapshot.val().pictureUrlRef;
+            var desertRef = Fb.storage.ref(child);
+            desertRef.delete().then(e=>{
+                console.log("picture deleted")
+            })
+        })
         Fb.contacts.child(id).remove();
+        
+        
+        
     }
 
     @action resetFilter = () => {
@@ -106,12 +111,14 @@ class Contacts{
         console.log(this.filter)
     }
 
-    @action setImage = (id) =>{
-        var ref = this;
-        this.pictureUrlRef.getDownloadURL().then(function(url) {
-            console.log(url)
-            console.log(ref.contacts[id])
-            ref.contacts[id].pictureUrl =  url;
+    @action setImage = (id, imref) =>{
+        imref.getDownloadURL().then(function(url) {
+            Fb.contacts.child(id).update({
+                pictureUrl:url,
+                pictureUrlRef:imref.fullPath
+
+            })
+            
         }).catch(function(error) {
           console.log(error)
         })
@@ -120,12 +127,14 @@ class Contacts{
 
     @action uploadImage =(file, id) =>{
         var imageRef = Fb.storageRef.child(id + '/' + file.name);
-       this.pictureUrlRef = imageRef;
-       var ref = this;
-       imageRef.put(file).then(function(snapshot) {
+        var ref = this;
+        console.log(imageRef.fullPath)
+        
+
+        imageRef.put(file).then(e => {
             console.log('Uploaded a file!');
-            ref.setImage(id)
-          });  
+            this.setImage(id, imageRef)
+        })
     }
 
 
