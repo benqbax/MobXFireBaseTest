@@ -173,7 +173,7 @@ export class ContactListComponent extends Component{
 
     @action resetAddButtons = () =>{
         
-        this.uploadButton = !this.uploadButton;
+        this.uploadButton = false;
         this.firstNameValue="";
         this.lastNameValue="";
         this.resetAddState()
