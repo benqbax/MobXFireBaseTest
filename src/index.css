@@ -1,5 +1,40 @@
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+  font-size: 13px;
+  line-height: 20px;
+  padding: 40px;
+  }
+
+.sidebar {
+	width: 400px;
+	display: inline-block;
+}
+
+.input{
+  margin-left:15px;
+}
+
+
+.filterinput{
+  margin-left:15px;
+  
+}
+
+
+.addContact{
+  margin-top:20px;
+  padding:10px 0 30px 0;
+  background:#00E676;
+
+  -webkit-box-shadow: inset 1px 1px 100px -41px rgba(0,0,0,0.75);
+  -moz-box-shadow: inset 1px 1px 100px -41px rgba(0,0,0,0.75);
+  box-shadow: inset 1px 1px 100px -41px rgba(0,0,0,0.75);
+
+}
+
+.saveButtons{
+  margin-top:20px;
 }

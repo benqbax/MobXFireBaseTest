@@ -5,7 +5,7 @@ var config = {
     authDomain: "mobxtesting.firebaseapp.com",
     databaseURL: "https://mobxtesting.firebaseio.com",
     projectId: "mobxtesting",
-    storageBucket: "",
+    storageBucket: "mobxtesting.appspot.com",
     messagingSenderId: "245327137280"
   };
   firebase.initializeApp(config);
@@ -13,13 +13,17 @@ var config = {
 
   const root = firebase.database().ref();
   const reff = firebase.database();
+  const storageRef = firebase.storage().ref('contacts'); 
+  const storage = firebase.storage(); 
   const contacts = firebase.database().ref('contacts');
 
 
   const Fb = {
+      storage,
       reff,
       root,
-      contacts
+      contacts,
+      storageRef
   };
 
   export { Fb };

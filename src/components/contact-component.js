@@ -2,16 +2,13 @@
 
 import React, {Component} from 'react';
 import {observer} from 'mobx-react';
-import {map} from 'lodash';
 import {ListItem} from 'material-ui/List';
+import Avatar from 'material-ui/Avatar';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import IconButton from 'material-ui/IconButton';
 import ModeEditIcon from 'material-ui/svg-icons/editor/mode-edit';
 import TextField from 'material-ui/TextField';
-
-const Edit ={
-    text: "Edit"
-}
+import ActionAccountCircle from 'material-ui/svg-icons/action/account-circle'
 
 @observer
 export class ContactComponent extends Component{
@@ -19,7 +16,6 @@ export class ContactComponent extends Component{
     componentWillMount(){
        // ListItem.defaultProps.disableTouchRipple = true; 
        // ListItem.defaultProps.disableFocusRipple = true;
-        
     }
 
     constructor(props){
@@ -72,12 +68,19 @@ export class ContactComponent extends Component{
     render(){
         const {contact, id} = this.props;
         const isEditing = this.state.editing;
+        console.log(contact.pictureUrl)
        if(!isEditing){
         return(
+
+            
             <ListItem
-            primaryText={contact.name}
-            leftIcon={<ModeEditIcon onClick={e =>this.handleEditing()}/>}
-            rightIcon={<NavigationClose onClick={e => this.handleDelete( id)}/>}/>
+            leftAvatar={
+                <Avatar src={contact.pictureUrl} size={40} />
+            }
+            primaryText={contact.firstName+" " +contact.lastName}
+            rightIcon={<NavigationClose onClick={e => this.handleDelete( id)}/>}>
+            
+            </ListItem>
         )
        }
        else{
